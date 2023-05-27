@@ -27,7 +27,7 @@ Normally when a method is invoked and the result is chained into another invocat
 Command syntax restores this cue.  The trailing bang clearly calls out a method's command status.  Furthermore, it's more than a visual.  It actually provides a benefit of its own.
 
 ### Fluent Interfaces
-Developers, for good and bad, enjoy using fluent interfaces because of the flow and brevity is affords.  Many libraries are designed for method chaining.  Consider [LINQ](https://www.codeproject.com/articles/603742/linq-for-javascript) and jQuery.
+Developers, for good and bad, enjoy using [fluent interfaces](https://www.sitepoint.com/javascript-like-boss-understanding-fluent-apis/) because of the flow and brevity is affords.  Many libraries are designed for method chaining.  Consider [LINQ](https://www.codeproject.com/articles/603742/linq-for-javascript) and jQuery.
 
 Here's a short LINQ method chain.  Chains frequently involve more than 2 operations.
 ```js
