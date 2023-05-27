@@ -250,7 +250,7 @@ function chainableAttr(key, value){
 ### Examples
 
 ```js
-//the disntinction between command and query are nonobvious
+//the distinction between command and query are nonobvious
 const animals = ['ant', 'bison', 'camel', 'duck', 'elephant']
   .slice(0, 2)
   .splice(0, 1)
@@ -258,7 +258,7 @@ const animals = ['ant', 'bison', 'camel', 'duck', 'elephant']
   .reverse();
 ```
 ```js
-//the disntinction between command and query are obvious
+//the distinction between command and query are obvious
 const animals = ['ant', 'bison', 'camel', 'duck', 'elephant']
   .slice(0, 2)
   .splice!(0, 1)
