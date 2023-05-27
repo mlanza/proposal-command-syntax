@@ -271,7 +271,28 @@ It could be useful if doing this added metadata to the function so its status as
 ### Further Considerations
 This draft is presented for a preliminary evaluation and to determine if it's wanted before some of the outstanding details are resolved.
 * Arrow functions
+* Logical not (`!`) - this syntax should not interface with logical not parsing (e.g. `const restaurant = cash > 12, tvDinner = !restaurant`)
 
+#### Use Operators Instead?
+This proposal calls for syntax.  But an operator might be another option.
+
+If `!` and `!.` are held as operators which map to well-known symbols `Symbol.returnSubject` and `Symbol.returnResult` set on the `Function` primitive, the operator could invoke the decorator residing at these symbol addresses and return a decorated version of the function.
+
+```js
+function attr(key, value){
+  //mutate
+  //no return value
+}
+
+const chainableAttr = attr!; //decorate
+const chainableAttrWithResult = attr!.; //decorate
+
+//equivalent to
+function chainableAttr(key, value){
+  //mutate via `attr`
+  return this
+}
+```
 ### Examples
 
 ```js
