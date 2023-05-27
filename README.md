@@ -138,7 +138,7 @@ house === dog; // false
 ```
 It says "this is side-effecting operation whose actual result—and not the subject—is wanted."  Effectively, no difference, from just calling `pop`.
 
-Take the earlier example and add `!.`.  While this addition has no programmatic effect, it's explicit about what it returns.
+While adding `!.` has no programmatic effect, it adds clarity by being explicit about what it returns.
 ```js
 const cartoons = ["Fred", "Wilma", "Betty", "Barney"];
 const rubbles = cartoons.splice!.(2, 2); //["Betty", "Barney"];
