@@ -219,7 +219,7 @@ It could be useful if doing this added metadata to the function so its status as
 * Conveniently apply multiple effects to the same subject
 * Method chaining libraries can be refactored to return-nothing commands
 * Provides a visual distinction between commands and queries
-* A syntax which regularly reminds devs about the ever-important CQ distinction
+* The ever-present syntax regularly reminds devs about the importance of CQS
 
 ### Further Considerations
 This draft is presented for a preliminary evaluation and to determine if it's wanted before some of the outstanding details are resolved.
