@@ -81,7 +81,7 @@ Fluent interfaces are best suited for chained queries.  Things get messy when co
 
 Ideally, commands return nothing.  While returning something from a command may occasionally be useful it shouldn't be normative.
 
-> Meyer likes to use command-query separation absolutely, but there are exceptions. Popping a stack is a good example of a query that modifies state. Meyer correctly says that you can avoid having this method, but it is a useful idiom. So I prefer to follow this principle when I can, but I'm prepared to break it to get my pop. ~ Martin Fowler
+> Meyer likes to use command-query separation absolutely, but there are exceptions. Popping a stack is a good example of a query that modifies state. Meyer correctly says that you can avoid having this method, but it is a useful idiom. So I prefer to follow this principle when I can, but I'm prepared to break it to get my pop. <br>— <cite>Martin Fowler</cite>
 
 This syntax is a natural fit for return-nothing commands.  And it provides new options for return-something commands:
 
@@ -95,7 +95,7 @@ const rubbles = cartoons.splice(2, 2); //["Betty", "Barney"];
 ```
 Since queries, on the other hand, mutate nothing and always return a result, they're incompatible with command syntax.  There'd be no reason to perform a side-effect free computation only to discard it and return the original subject.
 
-Not a problem.  This is, indeed, command-centric syntax!
+No problem, since this is indeed command-centric syntax!
 
 ### Faux Commands
 Arrays have several mutating operations: `sort`, `reverse`, `splice`.  But the advent of FP has caused devs to rethink how to simulate mutations.
@@ -118,13 +118,13 @@ nums === modNums; //false
 ```
 Functional programming simulates side effects and then later apply the fruit of the computation to achieve actual side effects—since a program without side effects does nothing.  It separates the pristine and pure from the messy and impure for greater good.
 
-Faux commands are the bread and butter of this kind of separation.  They permit simulation before effect.  T  Invariably, they're useful to have as evidenced by the eventual appearance of the three faux commands for arrays.  In practice, a faux command in its simplest form is a copy-before-mutation operation.
+Faux commands are the bread and butter of this kind of separation.  They permit simulation before effect.  Invariably, they're useful to have as evidenced by the eventual appearance of the three faux commands for arrays.  In practice, a faux command in its simplest form is a copy-before-mutation operation.
 
 In its optimal form it may be used with (persistent) data structures whose simulated commands benefit from efficient, under-the-hood structural reuse.  Clojure's go-to structures, maps and vectors, do precisely this.  Regardless of the type—object, array, map, or vector—reaching for faux commands allows one to simulate effects and solve problems functionally.
 
 Clojure offers both kinds of commands.  It's just that, by default, since everything is immutable, its commands are actually faux commands (i.e. queries) and change is simulated before it's applied.
 
-But faux commands are usually costlier than real, mutating commands.  That is why its often preferable to create intermediary objects for a succession of in place mutations than to simulate the succession.  The simulation adds overhead to the changes.  That's why Clojure has transients.  They allow the programmer to fall back on more performant mutations.
+But faux commands are usually costlier than real, mutating commands.  That is why its often preferable to create intermediary objects for a succession of in place mutations than to simulate the succession.  The simulated change adds an overhead that actual change does not.  That's why Clojure has transients.  They allow the programmer to fall back on more performant mutations.
 
 ```js
 const grades = {A: 1, B: 2, C: 3, D: 4, F: 5};
@@ -141,7 +141,7 @@ const topTen = reportCards.
 ```
 While the above is contrived, it uses a functional approach to computing an outcome.  Can you spot the inefficiencies?
 
-In each instance where `toWhatever` is called a copy happens first.  This is one of the reasons a dev executing a series of operations trades queries (i.e. faux commands) for actual commands.  Mutable objects and real change is faster than simulated change when several intermediaries operations are involved.
+In each instance where `toWhatever` is called a copy happens first.  This is why a dev executing a series of operations trades queries (faux commands) for actual commands.  Using mutable objects and real change is faster than simulating change especially as the number of intermediary operations increases.
 
 If the aim is to avoid mutating report cards only the initial copy is necessary:
 
@@ -153,7 +153,7 @@ const topTen = reportCards.
   reverse!().
   slice(0, 10);
 ```
-Because these are return-something commands, command syntax is unnecessary here.
+Because these are return-something commands, command syntax is functionally extraneous.
 ```js
 const topTen = reportCards.
   slice().
@@ -162,7 +162,7 @@ const topTen = reportCards.
   reverse().
   slice(0, 10);
 ```
-But that doesn't mean applying command syntax is without benefit.  With no bangs, it's harder to differentiate between command and query invocation.  It reads like a chain of queries, which conceals the reality of where side effects are happening!
+But that doesn't mean it's without benefit.  With no bangs, it's harder to differentiate between command and query invocation.  It reads like a chain of queries, which conceals the reality of where side effects are happening!
 
 Adding the bangs emphasizes the distinction.
 
@@ -181,15 +181,20 @@ house === people; // true, house === house
 ```
 And that's all well and good except for when the dog is actually wanted.  (Since he needs walking.)  But in the first example there's no visual cue regarding the side-effecting nature of the call.
 
-This can be remedied by a small variation—a period immediately follows the bang (e.g. `!.`):
+This can be remedied by a small variation—a bang dot (`!.`)—which affords a similar but slightly different cue:
 ```js
 const house = ["Fred", "Wilma", "Dino"];
 const dog = house.pop!.(); // "Dino"
 house === dog; // false
 ```
-This affords a similar cue.  It says "this is side-effecting operation whose actual result—which is not the subject—is wanted."  Effectively, no difference, from just calling `pop`.
+It says "this is side-effecting operation whose actual result—and not the subject—is wanted."  Effectively, no difference, from just calling `pop`.
 
-In fact, JavaScript could just ignore the extra syntax altogether.  But the reason it's kept is to allow the consistent visual cue, the bang, to remain.  It communicates to the reader that the command returns something other than its subject.  Another win!
+Take the earlier example and add `!.`.  While this addition has no programmatic effect, it's explicit about what it returns.
+```js
+const cartoons = ["Fred", "Wilma", "Betty", "Barney"];
+const rubbles = cartoons.splice!.(2, 2); //["Betty", "Barney"];
+```
+In fact, in such instances JavaScript could just ignore the extra syntax altogether.  But the reason it's kept is to allow the consistent visual cue, the bang, to remain.  It communicates to the reader that the command returns something other than its subject.  Another win!
 
 ### Functions Too?
 Yes. Same idea.
@@ -209,9 +214,9 @@ const nums = [8, 6, 7, 5, 3, 0, 9];
 append!(omit!(nums, 0), 1);
 nums; //[8,6,7,5,3,9,1]
 ```
-The nested calls clarify how command syntax is independent from, although suitable for, pipeline operations.
+The nested calls clarify how command syntax is independent from pipeline operations.
 
-Alternately:
+But it works there too:
 ```js
 const nums = [8, 6, 7, 5, 3, 0, 9]
   |> omit!(%, 0)
@@ -237,13 +242,13 @@ To avoid any confusion over placeholders:
 omit!(0, .[8, 6, 7, 5, 3, 0, 9]) //return tag in second position
   |> append!(%, 1);
 ```
-Don't be wary the dot because of decimals.  Remember, numbers are immutables and thus never the subjects of commands. There would be no reason to return tag a number and, to avoid the decimal ambiguity, numbers can always begin with a 0.
+Don't be wary the dot because of decimals.  Remember, numbers are immutables and thus never the subjects of commands. There would be no reason to return tag a number and, to avoid the decimal ambiguity, decimal numbers can always begin with a 0.
 
 For example:
 ```js
 omit!(0.6, .[.8, .6, .7, .5, .3, 0, .9]); //.[.8, .7, .5, .3, 0, .9]
 ```
-The dot was chosen to synchronize with the `!.` used above, where even in that instance it provides a cue about what gets returned.
+The dot was chosen to synchronize with the bang dot used above, where even that provides a cue about what gets returned.
 
 #### Function Names
 Since a central aspiration is for commands to stand apart from queries adding bangs to function definitions ought be possible too.
