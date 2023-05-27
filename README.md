@@ -223,7 +223,7 @@ It could be useful if doing this added metadata to the function so its status as
 
 ### Further Considerations
 This draft is presented for a preliminary evaluation and to determine if it's wanted before some of the outstanding details are resolved.
-* This proposal is complements the (clone operator proposal)[../proposal-clone-operator].
+* This proposal complements the [clone operator proposal](../proposal-clone-operator).
 * Arrow functions
 * This should not be confused by the parser as a logical not (`!`) — `const restaurant = cash > 12, tvDinner = !restaurant`
 
