@@ -266,7 +266,7 @@ const animals = ['ant', 'bison', 'camel', 'duck', 'elephant']
   .reverse!();
 ```
 ```js
-[1,2,3]!.reverse!().fill!(2, 1);
+[1,2,3]!.reverse!().fill!(2, 1); //begin with clone operator
 ```
 ```js
 const tip = [8, 6, 7, 5, 3, 0, 9]
