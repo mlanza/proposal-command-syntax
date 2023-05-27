@@ -93,54 +93,7 @@ Since queries, on the other hand, mutate nothing and always return a result, the
 
 No problem, since this is indeed command-centric syntax!
 
-### Faux Commands
-Arrays have several mutating operations: `sort`, `reverse`, `splice`.  But the advent of FP has caused devs to rethink how to simulate mutations.
-
-Recently, JavaScript arrays got `toSorted`, `toReversed` and `toSpliced`, what can be termed *faux commands*.  They're essentially the same as the original side-effecting commands except they copy first.
-
-```js
-  function toSorted(...args){
-    return this.slice().sort(...args); //slice = copy
-  }
-```
-A faux command is effectively a query which given some subject and a desired change returns a new copy of the subject with the change applied.  They're ordinarily used with state containers or what Clojure calls atoms.
-
-```js
-const nums = [8, 6, 7, 5, 3, 0, 9];
-const state = atom(nums);
-state.swap(a => a.toSorted()); //nums is not mutated!
-const modNums = state.deref(); //extract the replacement object
-nums === modNums; //false
-```
-Functional programming simulates side effects and then later applies the fruit of the computation to achieve actual side effects—since a program without side effects does nothing.  It separates the pristine and pure from the messy and impure for greater good.
-
-Faux commands are the bread and butter of this kind of separation.  They permit simulation before effect.  Invariably, they're useful to have as evidenced by the eventual appearance of the three faux commands for arrays.  In practice, a faux command in its simplest form is a copy-before-mutation operation.
-
-In its optimal form it may be used with (persistent) data structures whose simulated commands benefit from efficient, under-the-hood structural reuse.  Clojure's go-to structures, maps and vectors, do precisely this.  Regardless of the type—object, array, map, or vector—reaching for faux commands allows one to simulate effects and solve problems functionally.
-
-Clojure offers both kinds of commands.  It's just that, by default, since everything is immutable, its commands are actually faux commands (i.e. queries) and change is simulated before it's applied.
-
-But faux commands are usually costlier than real, mutating commands.  That is why its often preferable to create intermediary objects for a succession of in-place mutations than to simulate the succession.  The simulated change adds an overhead that actual change does not.  That's why Clojure has transients.  They allow the programmer to fall back on more performant mutations.
-
-```js
-const grades = {A: 1, B: 2, C: 3, D: 4, F: 5};
-function better(c1, c2){
-  return grades[c1.grade] - grades[c2.grade];
-}
-const reportCards = [...];
-//faux command method chain
-const topTen = reportCards
-  .toSpliced(0, 0, ...honorRollCards)
-  .toSorted(better)
-  .toReversed()
-  .slice(0, 10);
-```
-While the above is contrived, it uses a functional approach to computing an outcome.  Can you spot the inefficiencies?
-
-In each instance where `toWhatever` is called a copy happens first.  This is why a dev executing a series of operations trades queries (faux commands) for actual commands.  Using mutable objects and real change is faster than simulating change especially as the number of intermediary operations increases.
-
-If the aim is to avoid mutating report cards only the initial copy is necessary:
-
+Here's a series of clearly-marked mutating operations:
 ```js
 const topTen = reportCards
   .slice() //copy
@@ -149,7 +102,7 @@ const topTen = reportCards
   .reverse!()
   .slice(0, 10);
 ```
-Because these are return-something commands, command syntax is functionally extraneous.
+Because these are return-something commands, command syntax is extraneous.  Functionally the same as:
 ```js
 const topTen = reportCards
   .slice()
@@ -158,7 +111,7 @@ const topTen = reportCards
   .reverse()
   .slice(0, 10);
 ```
-But that doesn't mean it's without benefit.  With no bangs, it's harder to differentiate between command and query invocation.  It reads like a chain of queries, which conceals the reality of where side effects are happening!
+But that doesn't mean its use is without benefit.  With no bangs, it's harder to differentiate between command and query invocation.  It reads like a chain of queries, which conceals the reality of where side effects are happening!
 
 Adding the bangs emphasizes the distinction.
 
@@ -208,7 +161,7 @@ function append(xs, x){
 
 const nums = [8, 6, 7, 5, 3, 0, 9];
 append!(omit!(nums, 0), 1);
-nums; //[8,6,7,5,3,9,1]
+nums; //[8, 6, 7, 5, 3, 9, 1]
 ```
 The nested calls clarify how command syntax is independent from pipeline operations.
 
@@ -270,8 +223,9 @@ It could be useful if doing this added metadata to the function so its status as
 
 ### Further Considerations
 This draft is presented for a preliminary evaluation and to determine if it's wanted before some of the outstanding details are resolved.
+* This proposal is complements the (clone operator proposal)[../proposal-clone-operator].
 * Arrow functions
-* Logical not (`!`) - this syntax should not interfere with logical not parsing (e.g. `const restaurant = cash > 12, tvDinner = !restaurant`)
+* This should not be confused by the parser as a logical not (`!`) — `const restaurant = cash > 12, tvDinner = !restaurant`
 
 #### Use Operators Instead?
 This proposal calls for syntax.  But an operator might be another option.
