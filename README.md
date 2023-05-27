@@ -1,4 +1,4 @@
-# Command Syntax for JavaScript
+# Proposal: Command Syntax for JavaScript
 * Unofficial, Incubation — not even T39 **Stage 0**
 
 ## What
@@ -112,7 +112,7 @@ state.swap(a => a.toSorted()); //nums is not mutated!
 const modNums = state.deref(); //extract the replacement object
 nums === modNums; //false
 ```
-Functional programming simulates side effects and then later apply the fruit of the computation to achieve actual side effects—since a program without side effects does nothing.  It separates the pristine and pure from the messy and impure for greater good.
+Functional programming simulates side effects and then later applies the fruit of the computation to achieve actual side effects—since a program without side effects does nothing.  It separates the pristine and pure from the messy and impure for greater good.
 
 Faux commands are the bread and butter of this kind of separation.  They permit simulation before effect.  Invariably, they're useful to have as evidenced by the eventual appearance of the three faux commands for arrays.  In practice, a faux command in its simplest form is a copy-before-mutation operation.
 
@@ -120,7 +120,7 @@ In its optimal form it may be used with (persistent) data structures whose simul
 
 Clojure offers both kinds of commands.  It's just that, by default, since everything is immutable, its commands are actually faux commands (i.e. queries) and change is simulated before it's applied.
 
-But faux commands are usually costlier than real, mutating commands.  That is why its often preferable to create intermediary objects for a succession of in place mutations than to simulate the succession.  The simulated change adds an overhead that actual change does not.  That's why Clojure has transients.  They allow the programmer to fall back on more performant mutations.
+But faux commands are usually costlier than real, mutating commands.  That is why its often preferable to create intermediary objects for a succession of in-place mutations than to simulate the succession.  The simulated change adds an overhead that actual change does not.  That's why Clojure has transients.  They allow the programmer to fall back on more performant mutations.
 
 ```js
 const grades = {A: 1, B: 2, C: 3, D: 4, F: 5};
