@@ -140,7 +140,11 @@ function better(c1, c2){
 }
 const reportCards = [...];
 //faux command method chain
-const topTen = reportCards.toSpliced(0, 0, ...honorRollCards).toSorted(better).toReversed().slice(0, 10);
+const topTen = reportCards.
+  toSpliced(0, 0, ...honorRollCards).
+  toSorted(better).
+  toReversed().
+  slice(0, 10);
 ```
 While the above is contrived, it uses a functional approach to computing an outcome.  Can you spot the hidden costs in this approach?
 
@@ -149,11 +153,21 @@ In each instance where `toWhatever` is called a copy happens first.  This is one
 If the intent was to avoid mutating report cards only the initial copy (with `slice`) was necessary:
 
 ```js
-const topTen = reportCards.slice().splice!(0, 0, ...honorsReportCards).sort!(better).reverse!().slice(0, 10);
+const topTen = reportCards.
+  slice().
+  splice!(0, 0, ...honorsReportCards).
+  sort!(better).
+  reverse!().
+  slice(0, 10);
 ```
 Command syntax was unnecessary.  That's only because these methods violate CQS.
 ```js
-const topTen = reportCards.slice().splice(0, 0, ...honorsReportCards).sort(better).reverse().slice(0, 10);
+const topTen = reportCards.
+  slice().
+  splice(0, 0, ...honorsReportCards).
+  sort(better).
+  reverse().
+  slice(0, 10);
 ```
 But that doesn't mean using the extraneous command syntax provided no benefit.  Without the bangs, it's harder to get an actual sense of what's happening.  Except for in-head knowledge one can't spot the commands.  It reads like a chain of queries, exactly as the faux command method chain reads.  That's no good!
 
@@ -260,7 +274,7 @@ It could be useful for this to add metadata to the function its status as a comm
 * Provide a visual distinction between commands and queries
 * It regularly reminds devs about that ever-important distinction
 ### Further Considerations
-There is more to address.  However, the draft presents enough for a preliminary evaluation to see if its desired.  With enough interest, it can evolve.
+There is more to address.  However, the draft presents enough for a preliminary evaluation to see if it's desired.  With enough interest, it can evolve.
 * Arrow functions
 
 
