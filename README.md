@@ -7,13 +7,11 @@ Command syntax allows a method (or function) to be invoked while returning the s
 * For functions the subject is the first argument.
 
 This is done by appending a bang (!) to the invoking method.
-
 ```js
 const cartoons = ["Fred", "Wilma", "Betty", "Barney"];
 const flintstones = cartoons.splice!(2, 2); //["Fred", "Wilma"], not ["Betty", "Barney"];
 cartoons === flintstones; //true
 ```
-
 Serendipitously, this syntax is possible only because names cannot contain or end in bangs.
 
 ## Why
@@ -32,12 +30,10 @@ Command syntax restores this cue.  The trailing bang clearly calls out a method'
 Developers, for good and bad, enjoy using fluent interfaces because of the flow and brevity is affords.  Many libraries are designed for method chaining.  Consider [LINQ](https://www.codeproject.com/articles/603742/linq-for-javascript) and jQuery.
 
 Here's a short LINQ method chain.  Chains frequently involve more than 2 operations.
-
 ```js
 const arr = [1, 2, 3, 4, 5];
 const res = arr.where(t => t > 5).defaultIfEmpty(5);  // [5]
 ```
-
 Chaining is ideal when only side-effect free queries are involved (e.g. LINQ) and less ideal once commands are thrown into the mix (jQuery).
 
 When chains involve both command and query, the distinction is lost.  The dev must remember which operations are which.  Often, it's obvious, but not always.  What exacerbates the problem is how method chaining libraries deliberately and continually break CQS by writing every command like so:
@@ -54,16 +50,16 @@ Take the DOM where `setAttribute` and `removeAttribute` were properly implemente
 
 ```js
 //jQuery breaks CQS to get fluency
-$("img#foo").
-  attr("width", 100).
-  attr("height", 200).
-  removeAttr("style");
+$("img#foo")
+  .attr("width", 100)
+  .attr("height", 200)
+  .removeAttr("style");
 
 //command syntax preserves CQS and fluency
-document.getElementById("foo").
-  setAttribute!("width", 100).
-  setAttribute!("height", 200).
-  removeAttribute!("style");
+document.getElementById("foo")
+  .setAttribute!("width", 100)
+  .setAttribute!("height", 200)
+  .removeAttribute!("style");
 ```
 The former does away with return-nothing commands but not the latter.  Yet, nothing about `setAttribute` has changed.  It's just invocation syntax.  Since these are proper return-nothing commands, no return value is disregarded when `this`, the subject, is returned instead.
 
@@ -133,11 +129,11 @@ function better(c1, c2){
 }
 const reportCards = [...];
 //faux command method chain
-const topTen = reportCards.
-  toSpliced(0, 0, ...honorRollCards).
-  toSorted(better).
-  toReversed().
-  slice(0, 10);
+const topTen = reportCards
+  .toSpliced(0, 0, ...honorRollCards)
+  .toSorted(better)
+  .toReversed()
+  .slice(0, 10);
 ```
 While the above is contrived, it uses a functional approach to computing an outcome.  Can you spot the inefficiencies?
 
@@ -146,21 +142,21 @@ In each instance where `toWhatever` is called a copy happens first.  This is why
 If the aim is to avoid mutating report cards only the initial copy is necessary:
 
 ```js
-const topTen = reportCards.
-  slice(). //copy
-  splice!(0, 0, ...honorsReportCards).
-  sort!(better).
-  reverse!().
-  slice(0, 10);
+const topTen = reportCards
+  .slice() //copy
+  .splice!(0, 0, ...honorsReportCards)
+  .sort!(better)
+  .reverse!()
+  .slice(0, 10);
 ```
 Because these are return-something commands, command syntax is functionally extraneous.
 ```js
-const topTen = reportCards.
-  slice().
-  splice(0, 0, ...honorsReportCards).
-  sort(better).
-  reverse().
-  slice(0, 10);
+const topTen = reportCards
+  .slice()
+  .splice(0, 0, ...honorsReportCards)
+  .sort(better)
+  .reverse()
+  .slice(0, 10);
 ```
 But that doesn't mean it's without benefit.  With no bangs, it's harder to differentiate between command and query invocation.  It reads like a chain of queries, which conceals the reality of where side effects are happening!
 
@@ -280,19 +276,19 @@ This draft is presented for a preliminary evaluation and to determine if it's wa
 
 ```js
 //the disntinction between command and query are nonobvious
-const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'].
-  slice(0, 2).
-  splice(0, 1).
-  concat(['beaver']).
-  reverse();
+const animals = ['ant', 'bison', 'camel', 'duck', 'elephant']
+  .slice(0, 2)
+  .splice(0, 1)
+  .concat(['beaver'])
+  .reverse();
 ```
 ```js
 //the disntinction between command and query are obvious
-const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'].
-  slice(0, 2).
-  splice!(0, 1).
-  concat(['beaver']).
-  reverse!();
+const animals = ['ant', 'bison', 'camel', 'duck', 'elephant']
+  .slice(0, 2)
+  .splice!(0, 1)
+  .concat(['beaver'])
+  .reverse!();
 ```
 ```js
 [1,2,3]!.reverse!().fill!(2, 1);
