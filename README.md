@@ -209,7 +209,7 @@ function omit!(xs, x){
   return xs;
 }
 ```
-This too is just a syntactic cue.  The bang is not added to the actual function name.  It demarcates the function as a command and harmonizes with the fact such functions ought be invoked using command syntax anyway.
+This too is just a syntactic cue.  The bang is not added to the actual function name.  It demarcates the function as a command and harmonizes with the fact such functions ought be invoked using command syntax anyway.  Plus, it's helpful if file searches find all references to the command, trailing bang included.
 
 It could be useful if doing this added metadata to the function so its status as a command can be programmatically determined.
 
