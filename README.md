@@ -271,7 +271,7 @@ It could be useful if doing this added metadata to the function so its status as
 ### Further Considerations
 This draft is presented for a preliminary evaluation and to determine if it's wanted before some of the outstanding details are resolved.
 * Arrow functions
-* Logical not (`!`) - this syntax should not interface with logical not parsing (e.g. `const restaurant = cash > 12, tvDinner = !restaurant`)
+* Logical not (`!`) - this syntax should not interfere with logical not parsing (e.g. `const restaurant = cash > 12, tvDinner = !restaurant`)
 
 #### Use Operators Instead?
 This proposal calls for syntax.  But an operator might be another option.
