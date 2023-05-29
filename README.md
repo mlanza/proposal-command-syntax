@@ -4,7 +4,7 @@
 ## What
 Command syntax visually flags operations (methods or functions) which are commands so they stand apart from queries.  Since commands are subject to side effects, drawing attention to these unsafe operations is worthwhile.  Since FP itself is largely a disciplined approach for separating the safe from the unsafe, this aids that.
 
-It also provides a means by which commands can be invoked so that, instead of the actual result, it returns the subject.
+It also provides a means by which a command can be invoked so that, instead of the actual result, it returns the subject.
 * For methods the subject is `this`.
 * For functions the subject is the first argument.
 
@@ -14,7 +14,7 @@ const cartoons = ["Fred", "Wilma", "Betty", "Barney"];
 const flintstones = cartoons.splice!(2, 2); //["Fred", "Wilma"], not ["Betty", "Barney"];
 cartoons === flintstones; //true
 ```
-This trick makes method chaining possible even with return-nothing commands.
+This affords something otherwise impossible: method chaining for return-nothing commands.
 
 Serendipitously, this syntax is possible only because names cannot contain or end in bangs.
 
@@ -171,7 +171,7 @@ In this instance it would be called with the `!.` to denote its actual result is
 ```js
 const stats = footballStats!.("Eagles");
 ```
-These kinds of pseudo-query commands are exceptional.  When you're not traversing the network to query some mutable authority it's still preferrable to keep to return-nothing commands as much as possible.
+These kinds of pseudo-query commands are exceptional.  When you're not traversing the network to query some mutable authority it's still preferrable to write return-nothing commands wherever possible.
 ### Functions Too?
 Yes. Same idea.
 
@@ -200,7 +200,7 @@ const nums = [8, 6, 7, 5, 3, 0, 9]
 ```
 In both cases, the inferrence is return the first argument of the invocation.  No respect is given to the placeholders since the syntax is pipeline agnostic.
 
-Ordinarily, with functions the most important argument, the subject of the operation, comes first.  A function is, after all, just a method whose `this` is shifted to the first parameter postion.
+Ordinarily, with functions the most important argument, the subject of the operation, comes first.  A function is, after all, just a method whose `this` is promoted into the first parameter postion.
 
 However, conceivably, some function implementers may choose to have that subject passed in some other position.  For this reason, the return argument can be explicitly designated with a return tag (a dot).
 
