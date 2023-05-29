@@ -2,7 +2,7 @@
 * Unofficial, Incubation — not even T39 **Stage 0**
 
 ## What
-Command syntax visually flags operations (methods or functions) which are commands so they stand apart from queries.  Since commands are subject to side effects, drawing attention to these unsafe operations is worthwhile.
+Command syntax visually flags operations (methods or functions) which are commands so they stand apart from queries.  Since commands are subject to side effects, drawing attention to these unsafe operations is worthwhile.  Since FP itself is largely a disciplined approach for separating the safe from the unsafe, this aids that.
 
 It also provides a means by which commands can be invoked so that, instead of the actual result, it returns the subject.
 * For methods the subject is `this`.
@@ -239,6 +239,13 @@ function omit!(xs, x){
 This too is just a syntactic cue.  The bang is not added to the actual function name.  It demarcates the function as a command and harmonizes with the fact such functions ought be invoked using command syntax anyway.  Plus, it's helpful if file searches find all references to the command, trailing bang included.
 
 It could be useful if doing this added metadata to the function so its status as a command can be programmatically determined.
+
+### But It's Just Syntax!
+Well, yes and no.  While it's true adds an layer of syntax atop the language, it's not only syntax.  Return-nothing commands (the well-behaved ones) gain a fluent interface, for free.  This adds expressive brevity at no cost.  And it means more commands can be written properly to return nothing (dropping the extraneous `return this`).
+
+[Type annotations](https://www.codemotion.com/magazine/frontend/javascript/javascript-a-first-look-at-the-type-annotation-proposal/)/TypeScript is another syntax with benefits.  It affords compile time type checking.  Command syntax visually sifts the pure from the impure.  This, too, can be used for compile time analysis to show how well a program segregates the pure from the impure, something anyone moving increasingly toward FP disciplines would appreciate.
+
+And like type annotations, it's optional.  Just as some have refrained from leaping to TypeScript, devs who are not predisposed to FP's priorities may opt out.
 
 ### JavaScript: More Good Parts
 * Eliminates the onerous practice of having commands return `this`
