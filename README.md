@@ -54,7 +54,7 @@ function attr(key, value){
   return this;
 }
 ```
-The problem in wanting a fluent interface is the virility with which this antipattern spreads to all commands.  It forces the choice: fluency or return-nothing commands.  Pick one.  Command syntax eliminates the ultimatum.
+The problem in wanting a fluent interface is the virility with which this antipattern spreads to all commands.  It forces the choice: fluency or return-nothing commands.  Pick one.  Command syntax eliminates the ultimatum.  And these really are return-nothing commands save for the superflouous `return this`.
 
 Take the DOM where `setAttribute` and `removeAttribute` were properly implemented as return-nothing commands.  Here's fluency with jQuery and command syntax.
 
@@ -241,7 +241,7 @@ This too is just a syntactic cue.  The bang is not added to the actual function 
 It could be useful if doing this added metadata to the function so its status as a command can be programmatically determined.
 
 ### But It's Just Syntax!
-Well, yes and no.  While it adds an layer of syntax atop the language, it's not only that.  Commands gain a fluent interface.  This adds expressive brevity at no cost.  And it means all the return-something commands which are actually return-nothing commands save the `return this` can be fixed.
+Well, yes and no.  While it adds an layer of syntax atop the language, it's not only that.  Commands gain a fluent interface.  This adds expressive brevity at no cost.  And it means all the return-something commands which are actually return-nothing commands can be fixed.
 
 [Type annotations](https://www.codemotion.com/magazine/frontend/javascript/javascript-a-first-look-at-the-type-annotation-proposal/)/TypeScript is another syntax with benefits.  It affords compile time type checking.  Command syntax visually sifts the pure from the impure—something anyone moving increasingly toward FP disciplines ought appreciate.  And this, too, could use static analysis to show how well a program segregates these.
 
