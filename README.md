@@ -248,12 +248,12 @@ Well, yes and no.  While it adds an layer of syntax atop the language, it's not 
 Like type annotations, it's optional.  Devs who are not predisposed to FP's priorities may opt out.
 
 ### JavaScript: More Good Parts
-* Eliminates the onerous practice of having commands return `this`
+* Visually distinguishes commands from queries
+* Eliminate the onerous practice of commands returning `this`
+* Method chaining libraries can be refactored to return-nothing commands
 * Fluent interfaces and CQS, not one or the other
 * Conveniently apply multiple effects to the same subject
-* Method chaining libraries can be refactored to return-nothing commands
-* Provides a visual distinction between commands and queries
-* The ever-present syntax regularly reminds devs about the importance of CQS
+* Static code analysis citing safe and unsafe areas
 
 ### Further Considerations
 This draft is presented for a preliminary evaluation and to determine if it's wanted before some of the outstanding details are resolved.
@@ -281,8 +281,8 @@ function chainableAttr(key, value){
   return this
 }
 ```
-### Examples
 
+### Examples
 ```js
 //the distinction between command and query are nonobvious
 const animals = ['ant', 'bison', 'camel', 'duck', 'elephant']
