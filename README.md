@@ -2,7 +2,7 @@
 * Unofficial, Incubation — not even T39 **Stage 0**
 
 ## What
-Command syntax visually flags operations (methods or functions) which are commands (because of side effects) so they stand apart from queries.
+Command syntax visually flags operations (methods or functions) which are commands so they stand apart from queries.  Since commands are subject to side effects, drawing attention to these unsafe operations is worthwhile.
 
 It also provides a means by which commands can be invoked so that, instead of the actual result, it returns the subject.
 * For methods the subject is `this`.
@@ -14,6 +14,8 @@ const cartoons = ["Fred", "Wilma", "Betty", "Barney"];
 const flintstones = cartoons.splice!(2, 2); //["Fred", "Wilma"], not ["Betty", "Barney"];
 cartoons === flintstones; //true
 ```
+This trick makes method chaining possible even with return-nothing commands.
+
 Serendipitously, this syntax is possible only because names cannot contain or end in bangs.
 
 ## Why
