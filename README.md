@@ -243,9 +243,9 @@ It could be useful if doing this added metadata to the function so its status as
 ### But It's Just Syntax!
 Well, yes and no.  While it's true adds an layer of syntax atop the language, it's not only syntax.  Return-nothing commands (the well-behaved ones) gain a fluent interface, for free.  This adds expressive brevity at no cost.  And it means more commands can be written properly to return nothing (dropping the extraneous `return this`).
 
-[Type annotations](https://www.codemotion.com/magazine/frontend/javascript/javascript-a-first-look-at-the-type-annotation-proposal/)/TypeScript is another syntax with benefits.  It affords compile time type checking.  Command syntax visually sifts the pure from the impure.  This, too, can be used for compile time analysis to show how well a program segregates the pure from the impure, something anyone moving increasingly toward FP disciplines would appreciate.
+[Type annotations](https://www.codemotion.com/magazine/frontend/javascript/javascript-a-first-look-at-the-type-annotation-proposal/)/TypeScript is another syntax with benefits.  It affords compile time type checking.  Command syntax visually sifts the pure from the impure—something anyone moving increasingly toward FP disciplines ought appreciate.  And this, too, could use static analysis to show how well a program segregates these.
 
-And like type annotations, it's optional.  Just as some have refrained from leaping to TypeScript, devs who are not predisposed to FP's priorities may opt out.
+Like type annotations, it's optional.  Devs who are not predisposed to FP's priorities may opt out.
 
 ### JavaScript: More Good Parts
 * Eliminates the onerous practice of having commands return `this`
