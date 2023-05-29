@@ -30,7 +30,7 @@ Since queries are safe, their sytax is left untouched.  Rather, the proposed syn
 * return-nothing commands (`!`) — side effects with no return value
 * return-something commands (`!.`) — side effects with a return value
 
-Wherever possible, commands should return nothing.  It's called entirely for its effects.  In practice, language and library implementers oft ignore this, usually because return-something commands conveniently allow method chaining.  And, frankly, they are sometimes necessary.
+Wherever possible, according to the CQS principle, commands should return nothing and be called for their effects alone.  In practice, language and library implementers oft ignore this, usually because return-something commands conveniently allow method chaining.  And, frankly, they *are* sometimes necessary.
 
 Normally when a method is invoked and the result is chained into another invocation or assigned to a var, it signals a query.  But when the rule is ignored this distinction is lost.
 
