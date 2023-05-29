@@ -83,7 +83,7 @@ document.getElementById("foo")
 ```
 Here a succession of effects is applied to a single subject, essentially [`doto`](https://clojuredocs.org/clojure.core/doto).  Command syntax achieves the same.
 
-Fluent interfaces are best suited for chained queries.  Things get messy when commands are involved.  As previously stated, a chain should generally signal a succession of queries.
+Fluent interfaces are best suited for chained queries.  Things get messy when commands are involved.  As previously stated, a chain should generally signal a succession of queries.  But with bangs, one can now clearly signal a succession of commands.
 
 Ideally, commands return nothing.  While returning something from a command may occasionally be useful it shouldn't be normative.
 
