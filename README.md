@@ -26,7 +26,7 @@ According to CQS operations fall into 2 categories:
 * queries — always pure, lacking side effects
 * commands — always impure, because of side effects
 
-Since queries are safe, their sytax is left untouched.  Rather, the proposed syntax flags only commands, which also fall into 2 categories:
+Since queries are safe, their sytax is left untouched.  Rather, the syntax flags only commands, which also fall into 2 categories:
 * return-nothing commands (`!`) — side effects with no return value
 * return-something commands (`!.`) — side effects with a return value
 
@@ -123,7 +123,7 @@ const topTen = reportCards
 ```
 But that doesn't mean its use is without benefit.  With no bangs, it's harder to differentiate between command and query invocation.  It reads like a chain of queries, which conceals the reality of where side effects are happening!
 
-Adding the bangs emphasizes the distinction.
+Adding the bangs emphasize the distinction.
 
 What about side-effecting commands which return something other than the subject, like `pop`?
 
@@ -146,7 +146,7 @@ const house = ["Fred", "Wilma", "Dino"];
 const dog = house.pop!.(); // "Dino"
 house === dog; // false
 ```
-It says "this is side-effecting operation whose actual result—and not the subject—is wanted."  Effectively, no difference, from just calling `pop`.
+It says "this is a side-effecting operation whose actual result—and not the subject—is wanted."  Effectively, no difference from just calling `pop` without the syntax.
 
 While adding `!.` has no programmatic effect, it adds clarity by being explicit about what it returns.
 ```js
