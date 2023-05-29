@@ -14,7 +14,13 @@ const cartoons = ["Fred", "Wilma", "Betty", "Barney"];
 const flintstones = cartoons.splice!(2, 2); //["Fred", "Wilma"], not ["Betty", "Barney"];
 cartoons === flintstones; //true
 ```
-According to Command-Query Separation operations fall into 2 categories:
+Serendipitously, this syntax is possible only because names cannot contain or end in bangs.
+
+## Why
+### Command-Query Separation
+The wisdom and motivation for using [Command-Query Separation](https://www.martinfowler.com/bliki/CommandQuerySeparation.html) is already well covered by papers and posts.  In short, however, separating and calling out a distinction between impure and pure operations is good for both program readability and organization.
+
+According to CQS operations fall into 2 categories:
 * queries — always pure, lacking side effects
 * commands — always impure, because of side effects
 
@@ -22,13 +28,7 @@ Since queries are safe, their sytax is left untouched.  Rather, the proposed syn
 * return-nothing commands (`!`) — side effects with no return value
 * return-something commands (`!.`) — side effects with a return value
 
-Serendipitously, this syntax is possible only because names cannot contain or end in bangs.
-
-## Why
-### Command-Query Separation
-The wisdom and motivation for using [CQS principle](https://www.martinfowler.com/bliki/CommandQuerySeparation.html) is already well covered by papers and posts.  In short, however, separating and calling out a distinction between impure and pure operations is good for both program readability and organization.
-
-The cardinal rule of CQS is commands return nothing.  Thus, a return-nothing command is an honest one and is called entirely for its effects.  In practice, language and library implementers oft ignore this, usually because return-something commands conveniently allow method chaining.
+Wherever possible, commands should return nothing.  It's called entirely for its effects.  In practice, language and library implementers oft ignore this, usually because return-something commands conveniently allow method chaining.  And, frankly, they are sometimes necessary.
 
 Normally when a method is invoked and the result is chained into another invocation or assigned to a var, it signals a query.  But when the rule is ignored this distinction is lost.
 
@@ -160,15 +160,16 @@ function footballStats(team) {
   return fetch(`https://nflgames.io?team=${team}`);
 }
 ```
-Actually, no.  Since it calls an endpoint which can at different times return different results given the same inputs, it falls into the command category—more specifically, it's a return-something command.  (Confirming both flavors of commands are actually necessary.)
+Actually, no.  Since it calls an endpoint which can at different times return different results given the same inputs, it falls into the command category—more specifically, it's a return-something command.
 
-Even though invoking this particular operation queries a database and doesn't update anything, it can be impacted by side effects happening at some other time and place.  This means it cannot be considered referentially transparent.  This, by definition, according to the CQS principle, makes it a command.
+Even though invoking this particular operation queries a database and doesn't update anything itself, it can be impacted by side effects happening at some other time and place.  It's not referentially transparent.  This, by definition, according to the CQS principle, makes it a command.
 
-In this instance it would be called with the `!.` to denote it's actual result is wanted.
+In this instance it would be called with the `!.` to denote its actual result is wanted.
 
 ```js
 const stats = footballStats!.("Eagles");
 ```
+These kinds of pseudo-query commands are exceptional.  When you're not traversing the network to query some mutable authority it's still preferrable to keep to return-nothing commands as much as possible.
 ### Functions Too?
 Yes. Same idea.
 
