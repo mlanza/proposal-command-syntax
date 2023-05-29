@@ -2,7 +2,9 @@
 * Unofficial, Incubation — not even T39 **Stage 0**
 
 ## What
-Command syntax allows a method (or function) to be invoked while returning the subject instead of the actual result.
+Command syntax visually flags operations (methods or functions) which are commands (because of side effects) so they stand apart from queries.
+
+It also provides a means by which commands can be invoked so that, instead of the actual result, it returns the subject.
 * For methods the subject is `this`.
 * For functions the subject is the first argument.
 
@@ -12,13 +14,19 @@ const cartoons = ["Fred", "Wilma", "Betty", "Barney"];
 const flintstones = cartoons.splice!(2, 2); //["Fred", "Wilma"], not ["Betty", "Barney"];
 cartoons === flintstones; //true
 ```
+According to Command-Query Separation operations fall into 2 categories:
+* queries — always pure, lacking side effects
+* commands — always impure, because of side effects
+
+Since queries are safe, their sytax is left untouched.  Rather, the proposed syntax flags only commands, which also fall into 2 categories:
+* return-nothing commands (`!`) — side effects with no return value
+* return-something commands (`!.`) — side effects with a return value
+
 Serendipitously, this syntax is possible only because names cannot contain or end in bangs.
 
 ## Why
 ### Command-Query Separation
-This [CQS principle](https://www.martinfowler.com/bliki/CommandQuerySeparation.html) asks that functions be separated into two categories: commands (impure, side-effecting operations) and queries (pure operations).
-
-The wisdom and motivation for using CQS is covered by plenty of papers and posts and will, thus, only briefly be touched upon here.  In short, however, separating (and calling out a distinction) between impure and pure operations is good for both program readability and organization.
+The wisdom and motivation for using [CQS principle](https://www.martinfowler.com/bliki/CommandQuerySeparation.html) is already well covered by papers and posts.  In short, however, separating and calling out a distinction between impure and pure operations is good for both program readability and organization.
 
 The cardinal rule of CQS is commands return nothing.  Thus, a return-nothing command is an honest one and is called entirely for its effects.  In practice, language and library implementers oft ignore this, usually because return-something commands conveniently allow method chaining.
 
@@ -145,6 +153,22 @@ const rubbles = cartoons.splice!.(2, 2); //["Betty", "Barney"];
 ```
 In fact, in such instances JavaScript could just ignore the extra syntax altogether.  But the reason it's kept is to allow the consistent visual cue, the bang, to remain.  It communicates to the reader that the command returns something other than its subject.  Another win!
 
+What about a function which queries an endpoint?  Is that a query?
+
+```js
+function footballStats(team) {
+  return fetch(`https://nflgames.io?team=${team}`);
+}
+```
+Actually, no.  Since it calls an endpoint which can at different times return different results given the same inputs, it falls into the command category—more specifically, it's a return-something command.  (Confirming both flavors of commands are actually necessary.)
+
+Even though invoking this particular operation queries a database and doesn't update anything, it can be impacted by side effects happening at some other time and place.  This means it cannot be considered referentially transparent.  This, by definition, according to the CQS principle, makes it a command.
+
+In this instance it would be called with the `!.` to denote it's actual result is wanted.
+
+```js
+const stats = footballStats!.("Eagles");
+```
 ### Functions Too?
 Yes. Same idea.
 
